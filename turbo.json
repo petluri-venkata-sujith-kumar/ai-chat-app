@@ -1,0 +1,17 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**", ".next/**"]
+    },
+    "lint": {
+      "dependsOn": ["^lint"]
+    },
+    "dev": {
+      "env": ["GEMINI_API_KEY", "MONGO_URI", "PORT"],
+      "cache": false,
+      "persistent": true
+    }
+  }
+}
