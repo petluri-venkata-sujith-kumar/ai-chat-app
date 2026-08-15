@@ -54,4 +54,27 @@ router.post("/message", async (req, res) => {
   }
 });
 
+// --- GET: Fetch History ---
+router.get("/history/:userId", async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const chat = await Chat.findOne({ userId });
+
+    if (!chat || chat.chatID.length === 0) {
+      return res.status(200).json({ chatId: null, messages: [] });
+    }
+
+    // Default behavior: return the MOST RECENT chat session
+    const latestSession = chat.chatID[chat.chatID.length - 1];
+    
+    res.status(200).json({
+      chatId: latestSession.chatID,
+      messages: latestSession.messages,
+    });
+  } catch (error) {
+    console.error("Error fetching chat history:", error);
+    res.status(500).json({ error: "Failed to fetch chat history" });
+  }
+});
+
 export default router;
